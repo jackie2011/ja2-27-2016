@@ -127,7 +127,7 @@ class Converter(object):
     if remaining_lines != 0:
       self._warning_method(
           input_line,
-          "Processing completed, but not all lines were processed. "
+          u"Processing completed, but not all lines were processed. "
           "Remaining lines: {0}.".format(remaining_lines))
 
   def _ExtractPragmas(self, input_line, input_lines, output_stream):
@@ -170,8 +170,7 @@ class Converter(object):
         The new value of input_line after processing.
     """
     for line in input_lines[input_line - 1:]:
-      whitespace_match = constants.WHITESPACE_RE.match(line)
-      if not whitespace_match:
+      if line.strip():
         # Skipped all the whitespace.
         break
 
@@ -320,7 +319,7 @@ class Converter(object):
           if line[indent_pos + 1] != " ":
             self._warning_method(
                 input_line,
-                "Missing space after list symbol: {0}, "
+                u"Missing space after list symbol: {0}, "
                 "'{1}' was removed instead."
                 .format(line[indent_pos], line[indent_pos + 1]))
           line = line[indent_pos + 2:]
@@ -398,7 +397,7 @@ class Converter(object):
       else:
         self._warning_method(
             input_line,
-            "Bad list type: '{0}'".format(list_type))
+            u"Bad list type: '{0}'".format(list_type))
 
     return True
 
@@ -411,11 +410,11 @@ class Converter(object):
       output_stream: Output Markdown file.
     """
     handler = getattr(
-        self._formatting_handler, "Handle{0}Open".format(tag), None)
+        self._formatting_handler, u"Handle{0}Open".format(tag), None)
     if handler:
       handler(input_line, output_stream)
     else:
-      self._warning_method(input_line, "Bad open tag: '{0}'".format(tag))
+      self._warning_method(input_line, u"Bad open tag: '{0}'".format(tag))
 
     self._open_tags.append(tag)
 
@@ -428,11 +427,11 @@ class Converter(object):
       output_stream: Output Markdown file.
     """
     handler = getattr(
-        self._formatting_handler, "Handle{0}Close".format(tag), None)
+        self._formatting_handler, u"Handle{0}Close".format(tag), None)
     if handler:
       handler(input_line, output_stream)
     else:
-      self._warning_method(input_line, "Bad close tag: '{0}'".format(tag))
+      self._warning_method(input_line, u"Bad close tag: '{0}'".format(tag))
 
     self._open_tags.remove(tag)
 
@@ -509,7 +508,7 @@ class Converter(object):
                 output_stream,
                 match)
           else:
-            handler = getattr(self, "_Handle{0}".format(rulename), None)
+            handler = getattr(self, u"_Handle{0}".format(rulename), None)
             handler(input_line, match, output_stream)
 
       lastpos = fullmatch.end()
@@ -935,13 +934,13 @@ class Converter(object):
     else:
       self._warning_method(
           input_line,
-          "Unknown plugin was given, outputting "
+          u"Unknown plugin was given, outputting "
           "as plain text:\n\t{0}".format(match))
       # Wiki syntax put this class of error on its own line.
       self._formatting_handler.HandleEscapedText(
           input_line,
           output_stream,
-          "\n\n{0}\n\n".format(match))
+          u"\n\n{0}\n\n".format(match))
 
     # Add plugin and parameters to the stack.
     if not has_end:
@@ -974,7 +973,7 @@ class Converter(object):
       else:
         self._warning_method(
             input_line,
-            "The following parameter was given for the '{0}' tag, "
+            u"The following parameter was given for the '{0}' tag, "
             "but will not be present in the outputted HTML:\n\t'{1}': '{2}'"
             .format(plugin_id, name, value))
 
@@ -1012,7 +1011,7 @@ class Converter(object):
       else:
         self._warning_method(
             input_line,
-            "The following parameter was given for the '{0}' tag, "
+            u"The following parameter was given for the '{0}' tag, "
             "but will not be present in the outputted HTML:\n\t'{1}': '{2}'"
             .format(plugin_id, name, value))
 
@@ -1038,7 +1037,7 @@ class Converter(object):
     for name, value in params.items():
       self._warning_method(
           input_line,
-          "The following parameter was given for the '{0}' tag, "
+          u"The following parameter was given for the '{0}' tag, "
           "but will not be present in the outputted HTML:\n\t'{1}': '{2}'"
           .format(plugin_id, name, value))
 
@@ -1054,7 +1053,7 @@ class Converter(object):
     """
     self._warning_method(
         input_line,
-        "A wiki gadget was used, but this must be manually converted to a "
+        u"A wiki gadget was used, but this must be manually converted to a "
         "GFM-supported method, if possible. Outputting as plain text:\n\t{0}"
         .format(match))
     self._formatting_handler.HandleEscapedText(
@@ -1083,7 +1082,7 @@ class Converter(object):
       else:
         self._warning_method(
             input_line,
-            "The following parameter was given for the '{0}' tag, "
+            u"The following parameter was given for the '{0}' tag, "
             "but will not be present in the outputted HTML:\n\t'{1}': '{2}'"
             .format(plugin_id, name, value))
 
@@ -1100,13 +1099,13 @@ class Converter(object):
                   "video id within parameter \"url\".")
         self._warning_method(
             input_line,
-            "Video plugin has invalid video ID, outputting error:\n\t{0}"
+            u"Video plugin has invalid video ID, outputting error:\n\t{0}"
             .format(output))
         # Wiki syntax put this class of error on its own line.
         self._formatting_handler.HandleEscapedText(
             input_line,
             output_stream,
-            "\n\n{0}\n\n".format(output))
+            u"\n\n{0}\n\n".format(output))
       else:
         self._formatting_handler.HandleVideoOpen(
             input_line,
@@ -1118,13 +1117,13 @@ class Converter(object):
       output = "wiki:video: missing mandatory parameter \"url\"."
       self._warning_method(
           input_line,
-          "Video plugin is missing 'url' parameter, outputting error:\n\t{0}"
+          u"Video plugin is missing 'url' parameter, outputting error:\n\t{0}"
           .format(output))
       # Wiki syntax put this class of error on its own line.
       self._formatting_handler.HandleEscapedText(
           input_line,
           output_stream,
-          "\n\n{0}\n\n".format(output))
+          u"\n\n{0}\n\n".format(output))
 
   def _HandlePluginWikiToc(self, input_line, match, output_stream):
     """Handle a plugin tag for a wiki table of contents.
@@ -1134,19 +1133,14 @@ class Converter(object):
       match: Matched text.
       output_stream: Output Markdown file.
     """
-    output = "(TODO: Add table of contents.)"
     self._warning_method(
         input_line,
-        "A table of contents plugin was used for this wiki:\n"
+        u"A table of contents plugin was used for this wiki:\n"
         "\t{0}\n"
         "The Gollum wiki system supports table of content generation.\n"
         "See https://github.com/gollum/gollum/wiki for more information.\n"
-        "It has been replaced with:\n\t{1}"
-        .format(match, output))
-    self._formatting_handler.HandleEscapedText(
-        input_line,
-        output_stream,
-        output)
+        "It has been removed."
+        .format(match))
 
   def _HandlePluginEnd(self, input_line, match, output_stream):
     """Handle a plugin ending tag.
@@ -1190,17 +1184,17 @@ class Converter(object):
       else:
         self._warning_method(
             input_line,
-            "Unknown but matching plugin end was given, outputting "
+            u"Unknown but matching plugin end was given, outputting "
             "as plain text:\n\t{0}".format(match))
         # Wiki syntax put this class of error on its own line.
         self._formatting_handler.HandleEscapedText(
             input_line,
             output_stream,
-            "\n\n{0}\n\n".format(match))
+            u"\n\n{0}\n\n".format(match))
     else:
       self._warning_method(
           input_line,
-          "Unknown/unmatched plugin end was given, outputting "
+          u"Unknown/unmatched plugin end was given, outputting "
           "as plain text with errors:\n\t{0}".format(match))
       # Wiki syntax put this class of error on its own line,
       # with a prefix error message, and did not display the tag namespace.
@@ -1208,7 +1202,7 @@ class Converter(object):
       self._formatting_handler.HandleEscapedText(
           input_line,
           output_stream,
-          "\n\nUnknown end tag for </{0}>\n\n".format(tag_without_ns))
+          u"\n\nUnknown end tag for </{0}>\n\n".format(tag_without_ns))
 
   def _HandleVariable(self, input_line, match, output_stream):
     """Handle a variable.
@@ -1250,7 +1244,7 @@ class Converter(object):
     elif not output and match == "project":
       if self._project:
         output = self._project
-        instructions = ("It has been replaced with static text containing the "
+        instructions = (u"It has been replaced with static text containing the "
                         "name of the project:\n\t{0}".format(self._project))
       else:
         output = "(TODO: Replace with project name.)"
@@ -1260,7 +1254,7 @@ class Converter(object):
     # Not defined anywhere, just treat as regular text.
     if not output:
       # Add surrounding %% back on.
-      output = "%%{0}%%".format(match)
+      output = u"%%{0}%%".format(match)
 
     self._formatting_handler.HandleEscapedText(
         input_line,
@@ -1269,7 +1263,7 @@ class Converter(object):
     if instructions:
       self._warning_method(
           input_line,
-          "A variable substitution was performed with %%{0}%%. {1}"
+          u"A variable substitution was performed with %%{0}%%. {1}"
           .format(match, instructions))
 
   def _HandleTag(self, input_line, tag, output_stream):

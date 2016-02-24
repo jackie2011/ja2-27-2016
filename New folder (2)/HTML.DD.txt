@@ -1,0 +1,179 @@
+
+Cookies and User Identification 
+
+Contentsexpand_more
+Configuring cookie field settingsAutomatic Cookie Domain Configuration
+Cookie Expiration
+
+Getting the Client ID from the cookie
+
+
+
+
+...
+
+
+In order for Google Analytics to determine that two distinct hits belong to the same user, a unique identifier, associated with that particular user, must be sent with each hit.
+
+The analytics.js library accomplishes this via the client ID field, a unique, randomly generated string that gets stored in the browsers cookies, so subsequent visits to the same site can be associated with the same user.
+
+By default, analytics.js uses a single, first-party cookie named _ga to store the client ID, but the cookie's name, domain, and expiration time can all be customized.
+
+Using cookies allows analytics.js to identify unique users across browsing sessions, but it cannot identify unique users across different browsers or devices. If your site has its own authentication system, you can use the User ID feature, in addition to the client ID, to more accurately identify a user across all the devices they use to access your site.
+
+This guide explains how to customize the cookie settings as well as how to set the user ID field to more accurately track users across sessions.
+
+star Note: you can refer to the Cookie Usage guide for more information on how analytics.js uses cookies. 
+
+Configuring cookie field settings
+
+The following table shows the default cookie field values used by analytics.js:
+
+
+
+Field Name
+
+Value Type
+
+Default value
+
+cookieName text _ga 
+cookieDomain text The result of the following JavaScript expression:
+document.location.hostname  
+cookieExpires integer 63072000 (two years, in seconds) 
+
+To modify any of these values, you can specify them in the fieldObject you pass the create command. For example:
+
+content_copy
+ga('create', 'UA-XXXXX-Y', {
+  'cookieName': 'gaCookie',
+  'cookieDomain': 'blog.example.co.uk',
+  'cookieExpires': 60 * 60 * 24 * 28  // Time in seconds.
+});
+
+
+The most common cookie field to set is cookieDomain, as such, the create command accepts the cookieDomain field as an optional third parameter for convenience:
+
+content_copy
+ga('create', 'UA-XXXXX-Y', 'blog.example.co.uk');
+
+
+error Note: The cookieDomain must be an ancestor of the current domain, otherwise the cookie will not get set. For example, if your domain is one.two.three.root.com, you may configure the cookie to be set on root.com, but not someotherdomain.com. Setting an incorrect cookie domain will result in no hits being sent to Google Analytics. 
+
+Automatic Cookie Domain Configuration
+
+The recommended JavaScript tracking snippet sets the string 'auto' for the cookieDomain field:
+
+content_copy
+ga('create', 'UA-XXXXX-Y', 'auto');
+
+
+Specifying 'auto' as the cookieDomain enables automatic cookie domain configuration, which tells analytics.js to automatically determine the best cookie domain to use.
+
+Automatic cookie domain configuration sets the _ga cookie on the highest level domain it can. For example, if your website address is blog.example.co.uk, analytics.js will set the cookie domain to .example.co.uk. In addition, if analytics.js detects that you're running a server locally (e.g. localhost) it automatically sets the cookieDomain to 'none'.
+
+star When using automatic cookie domain configuration, your users will be tracked across subdomains without any extra configuration. 
+
+Cookie Expiration
+
+Every time a hit is sent to Google Analytics, the cookie expiration time is updated to be the current time plus the value of the cookieExpires field. This means that if you use the default cookieExpires time of two years, and a user visits your site every month, their cookie will never expire.
+
+If you set the cookieExpires time to 0 (zero) seconds, the cookie turns into a session based cookie and expires once the current browser session ends:
+
+Getting the Client ID from the cookie
+
+You should not directly access the cookie analytics.js sets, as the cookie format might change in the future. Instead, developers should use the readyCallback to wait until analytics.js is loaded, and then get the clientId value stored on the tracker.
+
+content_copy
+ga(function(tracker) {
+  var clientId = tracker.get('clientId');
+});
+
+Disabling Cookies
+
+In some cases you might want to use your own storage mechanism (such as localStorage or a Service Worker) to persist the client ID across sessions without using cookies. You can disable analytics.js from setting cookies by setting the storage field to 'none'.
+
+content_copy
+ga('create', 'UA-XXXXX-Y', {
+  'storage': 'none'
+});
+
+If you're storing the clientId field yourself, you'll need to make sure to set the cliendId field when you create the tracker.
+
+content_copy
+ga('create', 'UA-XXXXX-Y', {
+  'storage': 'none',
+  'clientId': '76c24efd-ec42-492a-92df-c62cfd4540a3'
+});
+
+Using localStorage to store the client ID
+
+The following code sample shows how you could modify the JavaScript tracking snippet to use localStorage to store the client ID rather than cookies:
+
+content_copy
+var GA_LOCAL_STORAGE_KEY = 'ga:clientId';
+
+if (window.localStorage) {
+  ga('create', 'UA-XXXXX-Y', 'auto', {
+    'storage': 'none',
+    'clientId': localStorage.getItem(GA_LOCAL_STORAGE_KEY)
+  });
+  ga(function(tracker) {
+    localStorage.setItem(GA_LOCAL_STORAGE_KEY, tracker.get('clientId'));
+  });
+}
+else {
+  ga('create', 'UA-XXXXX-Y', 'auto');
+}
+
+ga('send', 'pageview');
+
+
+error Note: unlike cookies, localStorage is bound by the same-origin policy. If parts of your site are on different subdomains, or if some pages use http and others pages use https, you cannot use localStorage to track users between those pages. For this reason, cookies continues to be the officially recommended way to store the client ID. 
+
+User ID
+
+User ID enables the analysis of groups of sessions, across devices, using a unique, persistent, and non-personally identifiable ID string representing a user. To learn why you should implement the User ID, see Benefits of using the User ID feature.
+
+To implement the User ID on the web:
+1.Provide your own unique, persistent, and non-personally identifiable string ID to represent each signed-in user. This ID is most often provided by an authentication system.
+2.Set the User ID on the tracker:
+
+content_copy
+ga('create', 'UA-XXXXX-Y', { 'userId': USER_ID });
+ga('send', 'pageview');
+
+error Important! The USER_ID value should be a unique, persistent, and non-personally identifiable string identifier that represents a user or signed-in account across devices. 
+
+Example
+
+A typical authentication system should be able to provide a unique, non-personally identifiable and persistent ID, for a signed in user. This ID can be sent to Google Analytics when a user signs into your website.
+
+For a website that implements such an authentication system and uses PHP, the tracking snippet could be dynamically updated to set the userId when a suitable ID is available, as in this example:
+
+content_copy
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];
+a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+<?php
+// New Google Analytics code to set User ID.
+// $userId is a unique, persistent, and non-personally identifiable string ID.
+if (isset($userId)) {
+  $gacode = "ga('create', 'UA-XXXXX-Y', 'auto', {'userId': '%s'});";
+  echo sprintf($gacode, $userId);
+} else {
+  $gacode = "ga('create', 'UA-XXXXX-Y', 'auto');";
+  echo sprintf($gacode);
+}?>
+
+ga('send', 'pageview');
+</script>
+
+In the above code, $userId is a variable set by the server only if the user has successfully authenticated to your service.
+
+
+Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 3.0 License, and code samples are licensed under the Apache 2.0 License. For details, see our Site Policies.

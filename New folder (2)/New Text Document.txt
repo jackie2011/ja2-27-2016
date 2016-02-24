@@ -1,0 +1,45 @@
+
+
+
+
+
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<body>
+
+
+<table><tr><td valign="top">
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 2ref2 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-1030070778871939"
+     data-ad-slot="2541262350"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</td><td valign="top">
+<ul><li><A href="http://2ref.info?w=Google%3A+2-Step+Verification">Google: 2-Step Verification</A><p>Sign in to a Google Account with both a password and a code that the system will send to a landline phone or cellphone, via SMS or call. Backup codes, and offline code generators for Android, iPhone, or BlackBerry also available.</li><li><A href="http://2ref.info?w=Google+Commerce">Google Commerce</A><p>Blog to stay up to date on Google Product Search, Google Offers, Google Wallet, Google Catalogs for tablets.</li><li><A href="http://2ref.info?w=Vulnerability+testing+and+security+verification.+Provides+real-time+independent+verification+of+a+Web+site%27s+security.">ScanAlert</A><p>Vulnerability testing and security verification. Provides real-time independent verification of a Web site's security.</li><li><A href="http://2ref.info?w=Google+minus+Google">Google minus Google</A><p>Search with Google without getting results from Google sites such as Knol, Blogger and YouTube.</li><li><A href="http://2ref.info?w=Church+of+Scientology+fights+Google">Church of Scientology fights Google</A><p>Civil libertarians were outraged when Google removed links to a site which portrays Scientology as a money-hungry cult. Scientology's legal threat may have backfired, since the critic's site now is second only to the Church's official site in search results. [BBC News]</li><li><A href="http://2ref.info?w=How2Google">How2Google</A><p>This site gives information about Google and how to use Google search with tips and tricks.</li><li><A href="http://2ref.info?w=Rapid+Verification+Services+Ltd">Rapid Verification Services Ltd</A><p>Provides document verification, title deed verification, background checks, employment screening, marriage checks and due diligence services in Kenya.</li><li><A href="http://2ref.info?w=Google+IPO+Central">Google IPO Central</A><p>Unofficial site about Google's IPO with news and discussion.</li><li><A href="http://2ref.info?w=Gmail+Notifier+Pro+for+Windows">Gmail Notifier Pro for Windows</A><p>Checks multiple Google Gmail accounts for new mail and display notifications. Google Calendar, Google News, Google Drive, Google+, Facebook, Twitter, Microsoft SkyDrive, Feedly and RSS/Atom feeds are also supported. IMAP or POP mail accounts, too.</li><li><A href="http://2ref.info?w=Google+traducere">Google traducere</A><p>Site de tradus online, oferit de Google. Suport? traduceri pentru combina?ii a 57 de limbi inclusiv limba rom</li><li><A href="http://2ref.info?w=Scientologists+gag+Google">Scientologists gag Google</A><p>Search engine Google caved in to demands from the "Church" of Scientology that it delete URLs pointing to a site critical of the cult. [The Register]</li><li><A href="http://2ref.info?w=Google+Pulls+Anti-Scientology+Links">Google Pulls Anti-Scientology Links</A><p>"Google was accused Wednesday of effectively removing from the Internet a Web site that is critical of the Church of Scientology after it deleted links to some of the site's pages from its search engine." By Matt Loney and Evan Hansen. [CNet]</li><li><A href="http://2ref.info?w=Google+Monitor+Query">Google Monitor Query</A><p>Web based tool for checking the search position in Google.com and five other Google domains for URLs and keywords.</li><li><A href="http://2ref.info?w=Candidates%40Google+-+Barack+Obama">Candidates@Google - Barack Obama</A><p>Illinois Senator and 2008 Democratic presidential hopeful Barack Obama visits Google's Mountain View, CA, headquarters to deliver his innovation agenda, speak with Google CEO Eric Schmidt, and take questions from Google employees.</li><li><A href="http://2ref.info?w=BBC+News%3A+Google+Hit+By+Link+Bombers">BBC News: Google Hit By Link Bombers</A><p>"Popular search site Google is being exploited by some net users to mount protests and play jokes on their friends."
+"http://www.nytimes.com/2002/12/09/technology/09NECO.html</li><li><A href="http://2ref.info?w=Beyond+Metrix">Beyond Metrix</A><p>Google Business View Trusted Photographer. Interactive virtual tour photography for Google Maps and Google Streetview.</li><li><A href="http://2ref.info?w=Google%3A+Time+Warner%27s+AOL+and+Google+to+Expand+Strategic+Alliance">Google: Time Warner's AOL and Google to Expand Strategic Alliance</A><p>Press release announcing that Google is to invest $1 billion for a 5% stake in AOL.</li><li><A href="http://2ref.info?w=BusinessWeek+Online+%3A+Google%27s+Ads+-+and+Minuses">BusinessWeek Online : Google's Ads - and Minuses</A><p>Argues that restrictive and opaque policies regarding Google's Adwords program hurts Google's reputation.</li><li><A href="http://2ref.info?w=Introducing+the+Google%2B+Project%3A+Real-life+Sharing%2C+Rethought+for+the+Web">Introducing the Google+ Project: Real-life Sharing, Rethought for the Web</A><p>Introduction and explanation of Google+ functionality on the official Google Blog.</li><li><A href="http://2ref.info?w=Google+Alert">Google Alert</A><p>Monitors professional interests online. Tracks the web for topics and sends new Google results by daily email. Not affiliated with Google.</li></ul>
+</td></tr></table>
+
+</body>
+</html>

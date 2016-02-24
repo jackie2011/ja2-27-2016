@@ -62,33 +62,41 @@ class TestIssueService(unittest.TestCase):
 
   def testCreateIssue(self):
     issue_body = {
-        "assignee": "a_uthor",
-        "content": ("Original [issue 1](https://code.google.com/p/repo/issues" +
-                 "/detail?id=1) created by a_uthor on last year:\n\none"),
+        "assignee": "default_username",
+        "content": (
+            "```\none\n```\n\nReported by `a_uthor` on last year\n"
+            "- **Labels added**: added-label\n"
+            "- **Labels removed**: removed-label\n"),
         "content_updated_on": "last month",
         "created_on": "last year",
         "id": 1,
-        "kind": "Defect",
-        "priority": "Medium",
+        "kind": "bug",
+        "priority": "minor",
         "reporter": None,
-        "status": "fixed",
+        "status": "resolved",
         "title": "issue_title",
         "updated_on": "last year",
     }
     issue_number = self._bitbucket_issue_service.CreateIssue(SINGLE_ISSUE)
     self.assertEqual(1, issue_number)
     actual = self._bitbucket_issue_service._bitbucket_issues[0]
+    # The comment body gets rewritten to preserve the origin ID.
+    issue_body["content"] = (
+        "Originally reported on Google Code with ID 1\n" + issue_body["content"])
+
     self.assertEqual(issue_body, actual)
 
   def testCloseIssue(self):
     # no-op
     self._bitbucket_issue_service.CloseIssue(123)
 
+  # TODO(chris): Add testcase for an issue comment  with attachments.
   def testCreateComment(self):
     comment_body = {
         "content": (
-            "Comment [#1](https://code.google.com/p/repo/issues/detail" +
-            "?id=1#c1) originally posted by a_uthor on last year:\n\none"),
+            "```\none\n```\n\nReported by `a_uthor` on last year\n"
+            "- **Labels added**: added-label\n"
+            "- **Labels removed**: removed-label\n"),
         "created_on": "last year",
         "id": 1,
         "issue": 1,
@@ -96,7 +104,7 @@ class TestIssueService(unittest.TestCase):
         "user": "a_uthor",
     }
     self._bitbucket_issue_service.CreateComment(
-        1, "1", SINGLE_COMMENT, BITBUCKET_REPO)
+        1, SINGLE_COMMENT)
     actual = self._bitbucket_issue_service._bitbucket_comments[0]
     self.assertEqual(comment_body, actual)
 
@@ -111,11 +119,6 @@ class TestIssueExporter(unittest.TestCase):
         self._bitbucket_issue_service, self._bitbucket_user_service,
         NO_ISSUE_DATA, BITBUCKET_REPO, USER_MAP)
     self.issue_exporter.Init()
-
-  def testGetAllPreviousIssues(self):
-    self.assertEqual(0, len(self.issue_exporter._previously_created_issues))
-    self.issue_exporter._GetAllPreviousIssues()
-    self.assertEqual(0, len(self.issue_exporter._previously_created_issues))
 
   def testCreateIssue(self):
     issue_number = self.issue_exporter._CreateIssue(SINGLE_ISSUE)
@@ -174,6 +177,7 @@ class TestIssueExporter(unittest.TestCase):
             "updated": "yesterday",
         }]
 
+    self.issue_exporter.Init()
     self.issue_exporter.Start()
 
     self.assertEqual(3, self.issue_exporter._issue_total)

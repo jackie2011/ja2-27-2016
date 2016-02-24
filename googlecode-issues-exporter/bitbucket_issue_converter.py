@@ -28,6 +28,44 @@ import sys
 import issues
 
 
+def _getKind(kind):
+  mapping = {
+    "defect": "bug",
+    "enhancement": "enhancement",
+    "task": "task",
+    "review": "proposal",
+    "other": "bug",
+  }
+  return mapping.get(kind.lower(), "bug")
+
+
+def _getPriority(priority):
+  mapping = {
+    "low": "trivial",
+    "medium": "minor",
+    "high": "major",
+    "critical": "critical",
+  }
+  return mapping.get(priority.lower(), "minor")
+
+
+def _getStatus(status):
+  mapping = {
+      "new": "new",
+      "fixed": "resolved",
+      "invalid": "invalid",
+      "duplicate": "duplicate",
+      "wontfix": "wontfix",
+  }
+  return mapping.get(status.lower(), "new")
+
+
+def _getTitle(title):
+  if len(title) < 255:
+    return title
+  return title[:250] + "[...]"
+
+
 class UserService(issues.UserService):
   """BitBucket user operations.
   """
@@ -80,11 +118,11 @@ class IssueService(issues.IssueService):
         "content_updated_on": googlecode_issue.GetContentUpdatedOn(),
         "created_on": googlecode_issue.GetCreatedOn(),
         "id": googlecode_issue.GetId(),
-        "kind": googlecode_issue.GetKind(),
-        "priority": googlecode_issue.GetPriority(),
+        "kind": _getKind(googlecode_issue.GetKind()),
+        "priority": _getPriority(googlecode_issue.GetPriority()),
         "reporter": googlecode_issue.GetAuthor(),
-        "status": googlecode_issue.GetStatus(),
-        "title": googlecode_issue.GetTitle(),
+        "status": _getStatus(googlecode_issue.GetStatus()),
+        "title": _getTitle(googlecode_issue.GetTitle()),
         "updated_on": googlecode_issue.GetUpdatedOn()
     }
     self._bitbucket_issues.append(bitbucket_issue)
@@ -97,15 +135,12 @@ class IssueService(issues.IssueService):
       issue_number: The issue number.
     """
 
-  def CreateComment(self, issue_number, source_issue_id,
-                    googlecode_comment, project_name):
+  def CreateComment(self, issue_number, googlecode_comment):
     """Creates a comment on an issue.
 
     Args:
       issue_number: The issue number.
-      source_issue_id: The Google Code issue id.
       googlecode_comment: An instance of GoogleCodeComment
-      project_name: The Google Code project name.
     """
     bitbucket_comment = {
         "content": googlecode_comment.GetDescription(),
@@ -129,19 +164,19 @@ class IssueService(issues.IssueService):
     }
     with open("db-1.0.json", "w") as issues_file:
       issues_json = json.dumps(issues_data, sort_keys=True, indent=4,
-                               separators=(",", ": "), ensure_ascii=False)
-      issues_file.write(unicode(issues_json))
+                               separators=(",", ": "))
+      issues_file.write(issues_json)
 
 
 def ExportIssues(issue_file_path, project_name,
-                 user_file_path, default_issue_kind, default_username):
+                 user_file_path, default_issue_kind):
   """Exports all issues for a given project.
   """
   issue_service = IssueService()
   user_service = UserService()
 
   issue_data = issues.LoadIssueData(issue_file_path, project_name)
-  user_map = issues.LoadUserData(user_file_path, default_username, user_service)
+  user_map = issues.LoadUserData(user_file_path, user_service)
 
   issue_exporter = issues.IssueExporter(
       issue_service, user_service, issue_data, project_name, user_map)
@@ -173,21 +208,23 @@ def main(args):
   parser.add_argument("--project_name", required=True,
                       help="The name of the Google Code project you wish to"
                       "export")
-  parser.add_argument("--user_file_path", required=True,
+  parser.add_argument("--user_file_path", required=False,
                       help="The path to the file containing a mapping from"
                       "email address to bitbucket username")
   parser.add_argument("--default_issue_kind", required=False,
                       help="A non-null string containing one of the following"
                       "values: bug, enhancement, proposal, task. Defaults to"
-                      "bug.")
-  parser.add_argument("--default_owner_username", required=True,
-                      help="The default issue username")
+                      "bug")
   parsed_args, _ = parser.parse_known_args(args)
+
+  # Default value.
+  if not parsed_args.default_issue_kind:
+    print "Using default issue kind of 'bug'."
+    parsed_args.default_issue_kind = "bug"
 
   ExportIssues(
     parsed_args.issue_file_path, parsed_args.project_name,
-    parsed_args.user_file_path, parsed_args.default_issue_kind,
-    parsed_args.default_owner_username)
+    parsed_args.user_file_path, parsed_args.default_issue_kind)
 
 
 if __name__ == "__main__":

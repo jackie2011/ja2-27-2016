@@ -1,6 +1,22 @@
+> <- leading whitespace shouldn't be ignored.
+
 # Header1
 
-(TODO: Add table of contents.)
+This is a test file for verifying the tool's output. You can regenerate
+`example.md` yourself by running:
+
+```
+python wiki2gfm.py \
+    --project=test \
+    --wikipages_list="TestPage" \
+    --input_file=example.wiki \
+    --output_file=example.md
+```
+
+Note that this is used by {{wiki2gfm\_test.py}}, so changing the
+arguments will break unit tests.
+
+
 
 #### Tables (mistmatched header sides)
 
@@ -12,22 +28,22 @@ Tables:
 
 |**Name/Sample**   | **Markup**       |
 |:-----------------|:-----------------|
-|  _italic_        | ` _italic_ `       |
-|  **bold**         | ` *bold* `         |
-|  ` code `         | `` `code` ``     |
-|  ` code `        | ` {{{code}}} `     |
-|  <sup>super</sup>script  | ` ^super^script `  |
-|  <sub>sub</sub>script  | ` ,,sub,,script `  |
-| ~~strikeout~~    | ` ~~strikeout~~ `  |
+|  _italic_        | `_italic_`       |
+|  **bold**         | `*bold*`         |
+|  `code`          | ```code```       |
+|  `code`          | `{{{code}}}`     |
+|  <sup>super</sup>script  | `^super^script`  |
+|  <sub>sub</sub>script  | `,,sub,,script`  |
+| ~~strikeout~~    | `~~strikeout~~`  |
 
 You can mix these typefaces in some ways:
 
 |       **Markup**                    |        **Result**                 |
 |:------------------------------------|:----------------------------------|
-| ` _*bold* in italics_ `             | _**bold** in italics_             |
-| ` *_italics_ in bold* `             | **_italics_ in bold**             |
-| ` *~~strike~~ works too* `          | **~~strike~~ works too**          |
-| ` ~~as well as _this_ way round~~ ` | ~~as well as _this_ way round~~   |
+| `_*bold* in italics_`               | _**bold** in italics_             |
+| `*_italics_ in bold*`               | **_italics_ in bold**             |
+| `*~~strike~~ works too*`            | **~~strike~~ works too**          |
+| `~~as well as _this_ way round~~`   | ~~as well as _this_ way round~~   |
 
 **IN HTML**
 
@@ -165,9 +181,9 @@ The following is:<br>
 
 ==== Links
 
-A LittleLink[?](wiki/TestPage)
+A LittleLink[?](TestPage.md)
 
-[TestPage](wiki/TestPage) is linked automatically.
+[TestPage](TestPage.md) is linked automatically.
 
 http://www.google.com/
 
@@ -184,9 +200,9 @@ http://www.google.com/
 **IN HTML**
 
 <span>
-A LittleLink<a href='wiki/TestPage'>?</a>
+A LittleLink<a href='TestPage.md'>?</a>
 
-<a href='wiki/TestPage'>TestPage</a> is linked automatically.<br>
+<a href='TestPage.md'>TestPage</a> is linked automatically.<br>
 <br>
 <a href='http://www.google.com/'>http://www.google.com/</a>
 
@@ -231,7 +247,7 @@ rev111612.<br>
 This text will be removed from the rendered page.
 '></a>
 
-(TODO: Link to Google+ page.)
+
 
 <a href='http://www.youtube.com/watch?feature=player_embedded&v=FiARsQSlzDc' target='_blank'><img src='http://img.youtube.com/vi/FiARsQSlzDc/0.jpg' width='425' height=344 /></a>
 
@@ -240,7 +256,7 @@ This text will be removed from the rendered page.
 This text will be removed from the rendered page.
 '></a><br>
 <br>
-(TODO: Link to Google+ page.)<br>
+<br>
 <br>
 <a href='http://www.youtube.com/watch?feature=player_embedded&v=FiARsQSlzDc' target='_blank'><img src='http://img.youtube.com/vi/FiARsQSlzDc/0.jpg' width='425' height=344 /></a><br>
 </span>
@@ -273,3 +289,13 @@ this is a var!<br>
 ## All done!
 
 Hope you enjoyed.
+
+# Regressions
+
+We were adding extra spaces around tick marks:
+
+alpha `beta` gamma
+
+Unicode hyperlinks:
+
+We should handle this: [Dé Dé](http://google.com)

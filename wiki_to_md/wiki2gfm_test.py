@@ -50,6 +50,9 @@ class BaseTest(unittest.TestCase):
     """
     self.assertEquals(expected_output, self.output.getvalue())
 
+  def assertNoOutput(self, expected_output):
+    self.assertNotEqual(expected_output, self.output.getvalue())
+
   def assertWarning(self, warning_contents, occurrences=1):
     """Assert that a warning was issued containing the given contents.
 
@@ -390,7 +393,7 @@ class TestFormattingHandler(BaseTest):
   def testHandleInlineCode(self):
     self.formatting_handler.HandleInlineCode(1, self.output, "xyz")
 
-    self.assertOutput("` xyz `")
+    self.assertOutput("`xyz`")
     self.assertNoWarnings()
 
   def testHandleInlineCodeInHtml(self):
@@ -499,14 +502,14 @@ class TestFormattingHandler(BaseTest):
   def testHandleWiki(self):
     self.formatting_handler.HandleWiki(1, self.output, "TestPage", "Test Page")
 
-    self.assertOutput("[Test Page](wiki/TestPage)")
+    self.assertOutput("[Test Page](TestPage.md)")
     self.assertNoWarnings()
 
   def testHandleWikiInHtml(self):
     self.formatting_handler._in_html = 1
     self.formatting_handler.HandleWiki(1, self.output, "TestPage", "Test Page")
 
-    self.assertOutput("<a href='wiki/TestPage'>Test Page</a>")
+    self.assertOutput("<a href='TestPage.md'>Test Page</a>")
     self.assertWarning("Link markup was used")
 
   def testHandleIssue(self):
@@ -707,7 +710,7 @@ class TestFormattingHandler(BaseTest):
     self.formatting_handler.HandleGPlusOpen(1, self.output, None)
     self.formatting_handler.HandleGPlusClose(1, self.output)
 
-    self.assertOutput("(TODO: Link to Google+ page.)")
+    self.assertNoOutput("(TODO: Link to Google+ page.)")
     self.assertWarning("A Google+ +1 button was embedded on this page")
 
   def testHandleGPlusInHtml(self):
@@ -715,7 +718,7 @@ class TestFormattingHandler(BaseTest):
     self.formatting_handler.HandleGPlusOpen(1, self.output, None)
     self.formatting_handler.HandleGPlusClose(1, self.output)
 
-    self.assertOutput("(TODO: Link to Google+ page.)")
+    self.assertNoOutput("(TODO: Link to Google+ page.)")
     self.assertWarning("A Google+ +1 button was embedded on this page")
 
   def testHandleComment(self):
